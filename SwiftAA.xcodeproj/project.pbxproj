@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		376313CE2C442FB5007E2823 /* RiseTransitSet2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376313CD2C442FB5007E2823 /* RiseTransitSet2.swift */; };
 		50CEF3C82A1BF28100367373 /* AA2DCoordinate.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CEF2CE2A1BF27D00367373 /* AA2DCoordinate.h */; };
 		50CEF3C92A1BF28100367373 /* AAVSOP87.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CEF2CF2A1BF27D00367373 /* AAVSOP87.cpp */; };
 		50CEF3CA2A1BF28100367373 /* AAKepler.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CEF2D02A1BF27D00367373 /* AAKepler.h */; };
@@ -486,6 +487,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		376313CD2C442FB5007E2823 /* RiseTransitSet2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiseTransitSet2.swift; sourceTree = "<group>"; };
 		50CEF2CE2A1BF27D00367373 /* AA2DCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AA2DCoordinate.h; sourceTree = "<group>"; };
 		50CEF2CF2A1BF27D00367373 /* AAVSOP87.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AAVSOP87.cpp; sourceTree = "<group>"; };
 		50CEF2D02A1BF27D00367373 /* AAKepler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAKepler.h; sourceTree = "<group>"; };
@@ -1165,6 +1167,7 @@
 				9F7A56FB1D15E6890033CDC5 /* Earth.swift */,
 				9FD71F6A1D736F4100E6F656 /* Moon.swift */,
 				9F877AFE1E052B83006FC6E5 /* RiseTransitSet.swift */,
+				376313CD2C442FB5007E2823 /* RiseTransitSet2.swift */,
 				9F6B38CB1D9FCED0008A2D96 /* Nutation.swift */,
 				9FFC4A501DCF891F00382049 /* GeographicCoordinates.swift */,
 				9FEA1DCF1DA1625500F7E346 /* AthmosphericRefraction.swift */,
@@ -2014,6 +2017,7 @@
 				9FD71F6F1D736FCB00E6F656 /* CelestialBodies.swift in Sources */,
 				9FDA5C2D1D16E612003B9F31 /* Mars.swift in Sources */,
 				9FFC4A4C1DCF872400382049 /* SaturnMoons.swift in Sources */,
+				376313CE2C442FB5007E2823 /* RiseTransitSet2.swift in Sources */,
 				9FDA5C301D16E625003B9F31 /* Jupiter.swift in Sources */,
 				6F5C3ED71E073BB200F572F6 /* Distances.swift in Sources */,
 				9FDA5C271D16E5E2003B9F31 /* Neptune.swift in Sources */,
