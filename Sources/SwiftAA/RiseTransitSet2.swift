@@ -7,5 +7,10 @@
 //
 
 import Foundation
+import AABridge
 
-public struct RiseTransitSet2 {}
+public struct RiseTransitSet2 {
+    public static func test() {
+        _ = CAARiseTransitSet2()
+    }
+}

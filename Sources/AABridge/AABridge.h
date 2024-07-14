@@ -68,3 +68,4 @@
 #import <AABridge/KPCAAUranus.h>
 #import <AABridge/KPCAAVenus.h>
 
+#import "AARiseTransitSet2.h"
