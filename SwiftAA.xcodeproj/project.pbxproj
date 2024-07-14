@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		376313CE2C442FB5007E2823 /* RiseTransitSet2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376313CD2C442FB5007E2823 /* RiseTransitSet2.swift */; };
+		376313D02C443103007E2823 /* RiseTransitSet2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376313CF2C443103007E2823 /* RiseTransitSet2Tests.swift */; };
 		50CEF3C82A1BF28100367373 /* AA2DCoordinate.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CEF2CE2A1BF27D00367373 /* AA2DCoordinate.h */; };
 		50CEF3C92A1BF28100367373 /* AAVSOP87.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CEF2CF2A1BF27D00367373 /* AAVSOP87.cpp */; };
 		50CEF3CA2A1BF28100367373 /* AAKepler.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CEF2D02A1BF27D00367373 /* AAKepler.h */; };
@@ -488,6 +489,7 @@
 
 /* Begin PBXFileReference section */
 		376313CD2C442FB5007E2823 /* RiseTransitSet2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiseTransitSet2.swift; sourceTree = "<group>"; };
+		376313CF2C443103007E2823 /* RiseTransitSet2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiseTransitSet2Tests.swift; sourceTree = "<group>"; };
 		50CEF2CE2A1BF27D00367373 /* AA2DCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AA2DCoordinate.h; sourceTree = "<group>"; };
 		50CEF2CF2A1BF27D00367373 /* AAVSOP87.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AAVSOP87.cpp; sourceTree = "<group>"; };
 		50CEF2D02A1BF27D00367373 /* AAKepler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAKepler.h; sourceTree = "<group>"; };
@@ -1562,6 +1564,7 @@
 				9F074CE71F6EB16000BDE079 /* PlutoTests.swift */,
 				9F6043721E6176FA00395C0E /* RefractionTests.swift */,
 				6F2141201E0F13D0005E1913 /* RiseTransitSetTests.swift */,
+				376313CF2C443103007E2823 /* RiseTransitSet2Tests.swift */,
 				9F8681CD1E6E91DF00C59F04 /* SaturnTests.swift */,
 				6F21411C1E0E4CD5005E1913 /* SunTests.swift */,
 				9F470DB11E5AD3D8003624D2 /* TimesTests.swift */,
@@ -2051,6 +2054,7 @@
 				9F6043771E61799E00395C0E /* AngularSeparationTests.swift in Sources */,
 				9F074D331F76862F00BDE079 /* DistancesTests.swift in Sources */,
 				9F074D291F73FA0600BDE079 /* JupiterMoonsTests.swift in Sources */,
+				376313D02C443103007E2823 /* RiseTransitSet2Tests.swift in Sources */,
 				9F074D301F765F5400BDE079 /* PlanetaryDiametersTests.swift in Sources */,
 				9F4B1B061E7BD27600407106 /* MercuryTests.swift in Sources */,
 				9F3849CB1E60BA990013D9A3 /* CelestialBodiesTests.swift in Sources */,
