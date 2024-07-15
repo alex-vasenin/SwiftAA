@@ -63,8 +63,7 @@ public struct RiseTransitSet2 {
                                      geographicCoordinates: GeographicCoordinates,
                                      refractionAtHorizon: Degree = -0.5667,
                                      stepInterval: Minute = 10,
-                                     algorithm: MoonAlgorithm = .MeeusTruncated,
-                                     highPrecision: Bool = false) -> [Details] {
+                                     algorithm: MoonAlgorithm = .MeeusTruncated) -> [Details] {
         let result = CAARiseTransitSet2.CalculateMoon(startDay.value,
                                                       endDay.value,
                                                       geographicCoordinates.longitude.value,
