@@ -15,7 +15,7 @@ public struct RiseTransitSet2 {
                                  within dateInterval: JulianDayInterval,
                                  geographicCoordinates: GeographicCoordinates,
                                  apparentRiseSetAltitude: Degree,
-                                 stepInterval: Minute = 10, // Approximately 0.007 days (AA+ default)
+                                 stepInterval: Minute = defaultStepInterval,
                                  highPrecision: Bool = false) -> [Details] {
         let result = CAARiseTransitSet2.Calculate(dateInterval.start.value,
                                                   dateInterval.end.value,
@@ -31,7 +31,7 @@ public struct RiseTransitSet2 {
     public static func calculateMoon(within dateInterval: JulianDayInterval,
                                      geographicCoordinates: GeographicCoordinates,
                                      refractionAtHorizon: Degree = -0.5667,
-                                     stepInterval: Minute = 10,
+                                     stepInterval: Minute = defaultStepInterval,
                                      algorithm: MoonAlgorithm = .MeeusTruncated) -> [Details] {
         let result = CAARiseTransitSet2.CalculateMoon(dateInterval.start.value,
                                                       dateInterval.end.value,
@@ -47,7 +47,7 @@ public struct RiseTransitSet2 {
                                            objectCoordinates: EquatorialCoordinates,
                                            geographicCoordinates: GeographicCoordinates,
                                            h0: Degree,
-                                           stepInterval: Minute = 10) -> [Details] {
+                                           stepInterval: Minute = defaultStepInterval) -> [Details] {
         let result = CAARiseTransitSet2.CalculateStationary(dateInterval.start.value,
                                                             dateInterval.end.value,
                                                             objectCoordinates.alpha.value,
@@ -58,6 +58,9 @@ public struct RiseTransitSet2 {
                                                             stepInterval.inDays.value)
         return result.map { Details(rawValue: $0) }
     }
+    
+    // Approximately 0.007 days (AA+ default)
+    public static let defaultStepInterval = Minute(10)
 }
 
 extension RiseTransitSet2 {
