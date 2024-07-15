@@ -28,6 +28,22 @@ public struct RiseTransitSet2 {
         return result.map { Details(rawValue: $0) }
     }
     
+    public static func calculateSun(within dateInterval: JulianDayInterval,
+                                    geographicCoordinates: GeographicCoordinates,
+                                    apparentRiseSetAltitude: Degree = defaultSunRiseSetAltitude,
+                                    stepInterval: Minute = defaultStepInterval,
+                                    highPrecision: Bool = false) -> [Details] {
+        let result = CAARiseTransitSet2.Calculate(dateInterval.start.value,
+                                                  dateInterval.end.value,
+                                                  .SUN,
+                                                  geographicCoordinates.longitude.value,
+                                                  geographicCoordinates.latitude.value,
+                                                  apparentRiseSetAltitude.value,
+                                                  stepInterval.inDays.value,
+                                                  highPrecision)
+        return result.map { Details(rawValue: $0) }
+    }
+    
     public static func calculateMoon(within dateInterval: JulianDayInterval,
                                      geographicCoordinates: GeographicCoordinates,
                                      refractionAtHorizon: Degree = defaultRiseSetAltitude,

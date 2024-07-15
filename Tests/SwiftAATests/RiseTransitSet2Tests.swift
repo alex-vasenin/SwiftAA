@@ -76,8 +76,7 @@ class RiseTransitSet2Tests: XCTestCase {
     
     func testSunAtMoscow2016() { // Data from SkySafari
         let dateInterval = JulianDayInterval(start: JulianDay(year: 2016, month: 12, day: 27), duration: 1)
-        let events = RiseTransitSet2.calculate(object: .SUN, within: dateInterval, geographicCoordinates: moscow,
-                                               apparentRiseSetAltitude: ArcMinute(-50).inDegrees)
+        let events = RiseTransitSet2.calculateSun(within: dateInterval, geographicCoordinates: moscow)
         
         let rises = events.filter { $0.type == .Rise }
         XCTAssert(rises.count == 1)
