@@ -19,7 +19,7 @@ class RiseTransitSet2Tests: XCTestCase {
         let endDay = JulianDay(year: 1988, month: 3, day: 21)
         let events = RiseTransitSet2.calculate(startDay: startDay, endDay: endDay,
                                                object: .VENUS, geographicCoordinates: boston,
-                                               apparentRiseSetAltitude: Degree(0.5667))
+                                               apparentRiseSetAltitude: Degree(-0.5667))
         
         let rises = events.filter { $0.type == .Rise }
         XCTAssert(rises.count == 1)
@@ -42,7 +42,7 @@ class RiseTransitSet2Tests: XCTestCase {
         let endDay = JulianDay(year: 2017, month: 3, day: 21)
         let events = RiseTransitSet2.calculate(startDay: startDay, endDay: endDay,
                                                object: .VENUS, geographicCoordinates: boston,
-                                               apparentRiseSetAltitude: Degree(0.5667))
+                                               apparentRiseSetAltitude: Degree(-0.5667))
         
         let rises = events.filter { $0.type == .Rise }
         XCTAssert(rises.count == 1)
@@ -65,7 +65,7 @@ class RiseTransitSet2Tests: XCTestCase {
         let endDay = JulianDay(year: 2016, month: 12, day: 28)
         let events = RiseTransitSet2.calculate(startDay: startDay, endDay: endDay,
                                                object: .VENUS, geographicCoordinates: moscow,
-                                               apparentRiseSetAltitude: Degree(0.5667))
+                                               apparentRiseSetAltitude: Degree(-0.5667))
         
         let rises = events.filter { $0.type == .Rise }
         XCTAssert(rises.count == 1)
