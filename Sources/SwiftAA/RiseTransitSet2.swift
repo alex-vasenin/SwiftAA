@@ -14,7 +14,7 @@ public struct RiseTransitSet2 {
     public static func calculate(object: Object,
                                  within dateInterval: JulianDayInterval,
                                  geographicCoordinates: GeographicCoordinates,
-                                 apparentRiseSetAltitude: Degree,
+                                 apparentRiseSetAltitude: Degree = defaultRiseSetAltitude,
                                  stepInterval: Minute = defaultStepInterval,
                                  highPrecision: Bool = false) -> [Details] {
         let result = CAARiseTransitSet2.Calculate(dateInterval.start.value,
@@ -30,7 +30,7 @@ public struct RiseTransitSet2 {
     
     public static func calculateMoon(within dateInterval: JulianDayInterval,
                                      geographicCoordinates: GeographicCoordinates,
-                                     refractionAtHorizon: Degree = -0.5667,
+                                     refractionAtHorizon: Degree = defaultRiseSetAltitude,
                                      stepInterval: Minute = defaultStepInterval,
                                      algorithm: MoonAlgorithm = .MeeusTruncated) -> [Details] {
         let result = CAARiseTransitSet2.CalculateMoon(dateInterval.start.value,
@@ -46,7 +46,7 @@ public struct RiseTransitSet2 {
     public static func calculateStationary(within dateInterval: JulianDayInterval,
                                            objectCoordinates: EquatorialCoordinates,
                                            geographicCoordinates: GeographicCoordinates,
-                                           h0: Degree,
+                                           apparentRiseSetAltitude: Degree = defaultRiseSetAltitude,
                                            stepInterval: Minute = defaultStepInterval) -> [Details] {
         let result = CAARiseTransitSet2.CalculateStationary(dateInterval.start.value,
                                                             dateInterval.end.value,
@@ -54,12 +54,16 @@ public struct RiseTransitSet2 {
                                                             objectCoordinates.delta.value,
                                                             geographicCoordinates.longitude.value,
                                                             geographicCoordinates.latitude.value,
-                                                            h0.value,
+                                                            apparentRiseSetAltitude.value,
                                                             stepInterval.inDays.value)
         return result.map { Details(rawValue: $0) }
     }
     
-    // Approximately 0.007 days (AA+ default)
+    /// Geometric altitude of the center of the body at the time of apparent rising or setting, see p.102 of AA.
+    public static let defaultRiseSetAltitude = ArcMinute(-34).inDegrees
+    /// Geometric altitude of the center of the body at the time of apparent rising or setting, see p.102 of AA.
+    public static let defaultSunRiseSetAltitude = ArcMinute(-50).inDegrees
+    /// Approximately 0.007 days (AA+ default)
     public static let defaultStepInterval = Minute(10)
 }
 
