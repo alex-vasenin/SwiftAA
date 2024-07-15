@@ -50,14 +50,14 @@ internal func fatalError(_ message: @autoclosure () -> String = "", file: Static
 }
 
 /// This is a `noreturn` function that pauses forever
-public func unreachable() -> Never {
+func unreachable() -> Never {
     repeat {
         RunLoop.current.run()
     } while (true)
 }
 
 /// Utility functions that can replace and restore the `fatalError` global function.
-public struct FatalErrorUtil {
+struct FatalErrorUtil {
     
     // Called by the custom implementation of `fatalError`.
     static var fatalErrorClosure: (String, StaticString, UInt) -> Never = defaultFatalErrorClosure
