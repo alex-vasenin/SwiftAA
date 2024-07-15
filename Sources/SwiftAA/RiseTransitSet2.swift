@@ -57,4 +57,38 @@ public struct RiseTransitSet2 {
                                                   highPrecision)
         return result.map { Details(rawValue: $0) }
     }
+    
+    public static func calculateMoon(startDay: JulianDay,
+                                     endDay: JulianDay,
+                                     geographicCoordinates: GeographicCoordinates,
+                                     refractionAtHorizon: Degree = -0.5667,
+                                     stepInterval: Minute = 10,
+                                     algorithm: MoonAlgorithm = .MeeusTruncated,
+                                     highPrecision: Bool = false) -> [Details] {
+        let result = CAARiseTransitSet2.CalculateMoon(startDay.value,
+                                                      endDay.value,
+                                                      geographicCoordinates.longitude.value,
+                                                      geographicCoordinates.latitude.value,
+                                                      refractionAtHorizon.value,
+                                                      stepInterval.inDays.value,
+                                                      algorithm)
+        return result.map { Details(rawValue: $0) }
+    }
+    
+    public static func calculateStationary(startDay: JulianDay,
+                                           endDay: JulianDay,
+                                           objectCoordinates: EquatorialCoordinates,
+                                           geographicCoordinates: GeographicCoordinates,
+                                           h0: Degree,
+                                           stepInterval: Minute = 10) -> [Details] {
+        let result = CAARiseTransitSet2.CalculateStationary(startDay.value,
+                                                            endDay.value,
+                                                            objectCoordinates.alpha.value,
+                                                            objectCoordinates.delta.value,
+                                                            geographicCoordinates.longitude.value,
+                                                            geographicCoordinates.latitude.value,
+                                                            h0.value,
+                                                            stepInterval.inDays.value)
+        return result.map { Details(rawValue: $0) }
+    }
 }
