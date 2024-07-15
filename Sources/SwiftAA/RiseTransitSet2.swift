@@ -11,17 +11,17 @@ import AABridge
 
 /// Implementation for the algorithms which obtain the Rise, Transit and Set times (revised version)
 public struct RiseTransitSet2 {
-    public static func calculate(object: Object,
-                                 within dateInterval: JulianDayInterval,
-                                 geographicCoordinates: GeographicCoordinates,
-                                 apparentRiseSetAltitude: Degree = defaultRiseSetAltitude,
-                                 stepInterval: Minute = defaultStepInterval,
-                                 highPrecision: Bool = false) -> [Details] {
+    public static func calculatePlanet(_ planet: OtherPlanet,
+                                       within dateInterval: JulianDayInterval,
+                                       observerLocation: GeographicCoordinates,
+                                       apparentRiseSetAltitude: Degree = defaultRiseSetAltitude,
+                                       stepInterval: Minute = defaultStepInterval,
+                                       highPrecision: Bool = false) -> [Details] {
         let result = CAARiseTransitSet2.Calculate(dateInterval.start.value,
                                                   dateInterval.end.value,
-                                                  object,
-                                                  geographicCoordinates.longitude.value,
-                                                  geographicCoordinates.latitude.value,
+                                                  planet.rawValue,
+                                                  observerLocation.longitude.value,
+                                                  observerLocation.latitude.value,
                                                   apparentRiseSetAltitude.value,
                                                   stepInterval.inDays.value,
                                                   highPrecision)
@@ -29,15 +29,15 @@ public struct RiseTransitSet2 {
     }
     
     public static func calculateSun(within dateInterval: JulianDayInterval,
-                                    geographicCoordinates: GeographicCoordinates,
+                                    observerLocation: GeographicCoordinates,
                                     apparentRiseSetAltitude: Degree = defaultSunRiseSetAltitude,
                                     stepInterval: Minute = defaultStepInterval,
                                     highPrecision: Bool = false) -> [Details] {
         let result = CAARiseTransitSet2.Calculate(dateInterval.start.value,
                                                   dateInterval.end.value,
                                                   .SUN,
-                                                  geographicCoordinates.longitude.value,
-                                                  geographicCoordinates.latitude.value,
+                                                  observerLocation.longitude.value,
+                                                  observerLocation.latitude.value,
                                                   apparentRiseSetAltitude.value,
                                                   stepInterval.inDays.value,
                                                   highPrecision)
@@ -45,31 +45,31 @@ public struct RiseTransitSet2 {
     }
     
     public static func calculateMoon(within dateInterval: JulianDayInterval,
-                                     geographicCoordinates: GeographicCoordinates,
+                                     observerLocation: GeographicCoordinates,
                                      refractionAtHorizon: Degree = defaultRiseSetAltitude,
                                      stepInterval: Minute = defaultStepInterval,
                                      algorithm: MoonAlgorithm = .MeeusTruncated) -> [Details] {
         let result = CAARiseTransitSet2.CalculateMoon(dateInterval.start.value,
                                                       dateInterval.end.value,
-                                                      geographicCoordinates.longitude.value,
-                                                      geographicCoordinates.latitude.value,
+                                                      observerLocation.longitude.value,
+                                                      observerLocation.latitude.value,
                                                       refractionAtHorizon.value,
                                                       stepInterval.inDays.value,
                                                       algorithm)
         return result.map { Details(rawValue: $0) }
     }
     
-    public static func calculateStationary(within dateInterval: JulianDayInterval,
-                                           objectCoordinates: EquatorialCoordinates,
-                                           geographicCoordinates: GeographicCoordinates,
-                                           apparentRiseSetAltitude: Degree = defaultRiseSetAltitude,
-                                           stepInterval: Minute = defaultStepInterval) -> [Details] {
+    public static func calculateStationaryObject(at objectCoordinates: EquatorialCoordinates,
+                                                 within dateInterval: JulianDayInterval,
+                                                 observerLocation: GeographicCoordinates,
+                                                 apparentRiseSetAltitude: Degree = defaultRiseSetAltitude,
+                                                 stepInterval: Minute = defaultStepInterval) -> [Details] {
         let result = CAARiseTransitSet2.CalculateStationary(dateInterval.start.value,
                                                             dateInterval.end.value,
                                                             objectCoordinates.alpha.value,
                                                             objectCoordinates.delta.value,
-                                                            geographicCoordinates.longitude.value,
-                                                            geographicCoordinates.latitude.value,
+                                                            observerLocation.longitude.value,
+                                                            observerLocation.latitude.value,
                                                             apparentRiseSetAltitude.value,
                                                             stepInterval.inDays.value)
         return result.map { Details(rawValue: $0) }
@@ -84,6 +84,28 @@ public struct RiseTransitSet2 {
 }
 
 extension RiseTransitSet2 {
+    public enum OtherPlanet {
+        case mercury
+        case venus
+        case mars
+        case jupiter
+        case saturn
+        case uranus
+        case neptune
+        
+        var rawValue: CAARiseTransitSet2.Object {
+            switch self {
+            case .mercury: return .MERCURY
+            case .venus: return .VENUS
+            case .mars: return .MARS
+            case .jupiter: return .JUPITER
+            case .saturn: return .SATURN
+            case .uranus: return .URANUS
+            case .neptune: return .NEPTUNE
+            }
+        }
+    }
+    
     public typealias EventType = CAARiseTransitSetDetails2.`Type`
     public typealias Object = CAARiseTransitSet2.Object
     public typealias MoonAlgorithm = CAARiseTransitSet2.MoonAlgorithm
