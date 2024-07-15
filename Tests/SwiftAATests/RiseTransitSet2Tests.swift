@@ -162,15 +162,9 @@ class RiseTransitSet2Tests: XCTestCase {
                                                           objectCoordinates: polaris,
                                                           geographicCoordinates: usLocation, 
                                                           h0: ArcMinute(-34).inDegrees)
-        XCTAssert(results.count == 2) // Only transits
-        XCTAssertNil(results.first(where: { $0.type == .Rise }))
-        XCTAssertNil(results.first(where: { $0.type == .Set }))
-        let northTransit = results.first(where: { $0.type == .NorthernTransit })
-        XCTAssertNotNil(northTransit)
-        XCTAssert(northTransit?.isAboveHorizon == true)
-        let southTransit = results.first(where: { $0.type == .SouthernTransit })
-        XCTAssertNotNil(southTransit)
-        XCTAssert(southTransit?.isAboveHorizon == true)
+        XCTAssert(results.allSatisfy({ $0.type == .NorthernTransit }))
+        XCTAssert(results.allSatisfy({ $0.isAboveHorizon == true }))
+        XCTAssert(results.count == 2)
     }
     
     func testPolarisTtransitErrorAlwaysBelow() {
@@ -183,12 +177,8 @@ class RiseTransitSet2Tests: XCTestCase {
                                                           objectCoordinates: polaris,
                                                           geographicCoordinates: paranal,
                                                           h0: ArcMinute(-34).inDegrees)
+        XCTAssert(results.allSatisfy({ $0.type == .NorthernTransit }))
+        XCTAssert(results.allSatisfy({ $0.isAboveHorizon == false }))
         XCTAssert(results.count == 2)
-        let northTransit = results.first(where: { $0.type == .NorthernTransit })
-        XCTAssertNotNil(northTransit)
-        XCTAssert(northTransit?.isAboveHorizon == false)
-        let southTransit = results.first(where: { $0.type == .SouthernTransit })
-        XCTAssertNotNil(southTransit)
-        XCTAssert(southTransit?.isAboveHorizon == false)
     }
 }
