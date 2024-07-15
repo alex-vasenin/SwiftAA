@@ -15,10 +15,8 @@ class RiseTransitSet2Tests: XCTestCase {
     let accuracy = Minute(2).inJulianDays
     
     func testVenusAtBoston1988() { // See AA p.103
-        let startDay = JulianDay(year: 1988, month: 3, day: 20)
-        let endDay = JulianDay(year: 1988, month: 3, day: 21)
-        let events = RiseTransitSet2.calculate(startDay: startDay, endDay: endDay,
-                                               object: .VENUS, geographicCoordinates: boston,
+        let dateInterval = JulianDayInterval(start: JulianDay(year: 1988, month: 3, day: 20), duration: 1)
+        let events = RiseTransitSet2.calculate(object: .VENUS, within: dateInterval, geographicCoordinates: boston,
                                                apparentRiseSetAltitude: Degree(-0.5667))
         
         let rises = events.filter { $0.type == .Rise }
@@ -38,10 +36,8 @@ class RiseTransitSet2Tests: XCTestCase {
     }
     
     func testVenusAtBoston2017() { // See http://aa.usno.navy.mil/data/docs/mrst.php
-        let startDay = JulianDay(year: 2017, month: 3, day: 20)
-        let endDay = JulianDay(year: 2017, month: 3, day: 21)
-        let events = RiseTransitSet2.calculate(startDay: startDay, endDay: endDay,
-                                               object: .VENUS, geographicCoordinates: boston,
+        let dateInterval = JulianDayInterval(start: JulianDay(year: 2017, month: 3, day: 20), duration: 1)
+        let events = RiseTransitSet2.calculate(object: .VENUS, within: dateInterval, geographicCoordinates: boston,
                                                apparentRiseSetAltitude: Degree(-0.5667))
         
         let rises = events.filter { $0.type == .Rise }
@@ -61,10 +57,8 @@ class RiseTransitSet2Tests: XCTestCase {
     }
     
     func testVenusAtMoscow2016() { // Data from SkySafari
-        let startDay = JulianDay(year: 2016, month: 12, day: 27)
-        let endDay = JulianDay(year: 2016, month: 12, day: 28)
-        let events = RiseTransitSet2.calculate(startDay: startDay, endDay: endDay,
-                                               object: .VENUS, geographicCoordinates: moscow,
+        let dateInterval = JulianDayInterval(start: JulianDay(year: 2016, month: 12, day: 27), duration: 1)
+        let events = RiseTransitSet2.calculate(object: .VENUS, within: dateInterval, geographicCoordinates: moscow,
                                                apparentRiseSetAltitude: Degree(-0.5667))
         
         let rises = events.filter { $0.type == .Rise }
@@ -84,10 +78,8 @@ class RiseTransitSet2Tests: XCTestCase {
     }
     
     func testSunAtMoscow2016() { // Data from SkySafari
-        let startDay = JulianDay(year: 2016, month: 12, day: 27)
-        let endDay = JulianDay(year: 2016, month: 12, day: 28)
-        let events = RiseTransitSet2.calculate(startDay: startDay, endDay: endDay, 
-                                               object: .SUN, geographicCoordinates: moscow,
+        let dateInterval = JulianDayInterval(start: JulianDay(year: 2016, month: 12, day: 27), duration: 1)
+        let events = RiseTransitSet2.calculate(object: .SUN, within: dateInterval, geographicCoordinates: moscow,
                                                apparentRiseSetAltitude: ArcMinute(-50).inDegrees)
         
         let rises = events.filter { $0.type == .Rise }
@@ -107,8 +99,8 @@ class RiseTransitSet2Tests: XCTestCase {
     }
     
     func testMoonAtMoscow2016() { // Data from SkySafari
-        let jd = JulianDay(year: 2016, month: 12, day: 27)
-        let events = RiseTransitSet2.calculateMoon(startDay: jd, endDay: jd + 1, geographicCoordinates: moscow)
+        let dateInterval = JulianDayInterval(start: JulianDay(year: 2016, month: 12, day: 27), duration: 1)
+        let events = RiseTransitSet2.calculateMoon(within: dateInterval, geographicCoordinates: moscow)
         
         let rises = events.filter { $0.type == .Rise }
         XCTAssert(rises.count == 1)
@@ -128,13 +120,13 @@ class RiseTransitSet2Tests: XCTestCase {
     }
     
     func testSiriusInCerroParanalChile() {
-        let jd1 = JulianDay(year: 2018, month: 1, day: 1, hour: 12, minute: 0, second: 0)
-        let jd2 = JulianDay(year: 2018, month: 6, day: 1, hour: 12, minute: 0, second: 0)
-        let coords = EquatorialCoordinates(rightAscension: Hour(.plus, 6, 45, 9.25), 
+        let coords = EquatorialCoordinates(rightAscension: Hour(.plus, 6, 45, 9.25),
                                            declination: Degree(.minus, 16, 42, 47.3))
         let paranal = GeographicCoordinates(positivelyWestwardLongitude: Degree(24.627222),
                                             latitude: Degree(-70.404167), altitude: 2400)
-        let results1 = RiseTransitSet2.calculateStationary(startDay: jd1, endDay: jd1 + 1,
+        
+        let dateInterval1 = JulianDayInterval(start: JulianDay(year: 2018, month: 1, day: 1, hour: 12), duration: 1)
+        let results1 = RiseTransitSet2.calculateStationary(within: dateInterval1,
                                                            objectCoordinates: coords,
                                                            geographicCoordinates: paranal,
                                                            h0: ArcMinute(-34).inDegrees)
@@ -142,7 +134,8 @@ class RiseTransitSet2Tests: XCTestCase {
         XCTAssert(results1.filter { $0.type == .Rise } .count == 1)
         XCTAssert(results1.filter { $0.type == .Set } .count == 1)
         
-        let results2 = RiseTransitSet2.calculateStationary(startDay: jd2, endDay: jd2 + 1,
+        let dateInterval2 = JulianDayInterval(start: JulianDay(year: 2018, month: 6, day: 1, hour: 12), duration: 1)
+        let results2 = RiseTransitSet2.calculateStationary(within: dateInterval2,
                                                            objectCoordinates: coords,
                                                            geographicCoordinates: paranal,
                                                            h0: ArcMinute(-34).inDegrees)
@@ -153,12 +146,12 @@ class RiseTransitSet2Tests: XCTestCase {
     }
     
     func testPolarisTtransitErrorAlwaysAbove() {
+        let dateInterval = JulianDayInterval(start: JulianDay(year: 2020, month: 9, day: 6), duration: 1)
         let polaris = EquatorialCoordinates(rightAscension: Hour(.plus, 2, 31, 47.08),
                                             declination: Degree(.plus, 89, 15, 50.9))
-        let jd = JulianDay(year: 2020, month: 9, day: 6)
         let usLocation = GeographicCoordinates(positivelyWestwardLongitude: Degree(.plus, 7, 46, 42),
                                                latitude: Degree(.plus, 49, 9, 3), altitude: 210)
-        let results = RiseTransitSet2.calculateStationary(startDay: jd, endDay: jd+1,
+        let results = RiseTransitSet2.calculateStationary(within: dateInterval,
                                                           objectCoordinates: polaris,
                                                           geographicCoordinates: usLocation, 
                                                           h0: ArcMinute(-34).inDegrees)
@@ -168,12 +161,12 @@ class RiseTransitSet2Tests: XCTestCase {
     }
     
     func testPolarisTtransitErrorAlwaysBelow() {
-        let jd = JulianDay(year: 2020, month: 9, day: 6)
+        let dateInterval = JulianDayInterval(start: JulianDay(year: 2020, month: 9, day: 6), duration: 1)
         let polaris = EquatorialCoordinates(rightAscension: Hour(.plus, 2, 31, 47.08),
                                             declination: Degree(.plus, 89, 15, 50.9))
         let paranal = GeographicCoordinates(positivelyWestwardLongitude: Degree(24.627222),
                                             latitude: Degree(-70.404167), altitude: 2400)
-        let results = RiseTransitSet2.calculateStationary(startDay: jd, endDay: jd+1,
+        let results = RiseTransitSet2.calculateStationary(within: dateInterval,
                                                           objectCoordinates: polaris,
                                                           geographicCoordinates: paranal,
                                                           h0: ArcMinute(-34).inDegrees)

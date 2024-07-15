@@ -40,15 +40,14 @@ public struct RiseTransitSet2 {
         }
     }
     
-    public static func calculate(startDay: JulianDay,
-                                 endDay: JulianDay,
-                                 object: Object,
+    public static func calculate(object: Object,
+                                 within dateInterval: JulianDayInterval,
                                  geographicCoordinates: GeographicCoordinates,
                                  apparentRiseSetAltitude: Degree,
                                  stepInterval: Minute = 10, // Approximately 0.007 days (AA+ default)
                                  highPrecision: Bool = false) -> [Details] {
-        let result = CAARiseTransitSet2.Calculate(startDay.value,
-                                                  endDay.value,
+        let result = CAARiseTransitSet2.Calculate(dateInterval.start.value,
+                                                  dateInterval.end.value,
                                                   object,
                                                   geographicCoordinates.longitude.value,
                                                   geographicCoordinates.latitude.value,
@@ -58,14 +57,13 @@ public struct RiseTransitSet2 {
         return result.map { Details(rawValue: $0) }
     }
     
-    public static func calculateMoon(startDay: JulianDay,
-                                     endDay: JulianDay,
+    public static func calculateMoon(within dateInterval: JulianDayInterval,
                                      geographicCoordinates: GeographicCoordinates,
                                      refractionAtHorizon: Degree = -0.5667,
                                      stepInterval: Minute = 10,
                                      algorithm: MoonAlgorithm = .MeeusTruncated) -> [Details] {
-        let result = CAARiseTransitSet2.CalculateMoon(startDay.value,
-                                                      endDay.value,
+        let result = CAARiseTransitSet2.CalculateMoon(dateInterval.start.value,
+                                                      dateInterval.end.value,
                                                       geographicCoordinates.longitude.value,
                                                       geographicCoordinates.latitude.value,
                                                       refractionAtHorizon.value,
@@ -74,14 +72,13 @@ public struct RiseTransitSet2 {
         return result.map { Details(rawValue: $0) }
     }
     
-    public static func calculateStationary(startDay: JulianDay,
-                                           endDay: JulianDay,
+    public static func calculateStationary(within dateInterval: JulianDayInterval,
                                            objectCoordinates: EquatorialCoordinates,
                                            geographicCoordinates: GeographicCoordinates,
                                            h0: Degree,
                                            stepInterval: Minute = 10) -> [Details] {
-        let result = CAARiseTransitSet2.CalculateStationary(startDay.value,
-                                                            endDay.value,
+        let result = CAARiseTransitSet2.CalculateStationary(dateInterval.start.value,
+                                                            dateInterval.end.value,
                                                             objectCoordinates.alpha.value,
                                                             objectCoordinates.delta.value,
                                                             geographicCoordinates.longitude.value,

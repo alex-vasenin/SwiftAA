@@ -254,3 +254,26 @@ public extension JulianDay {
 }
 
 
+/// The span of time between a specific start date and end date.
+public struct JulianDayInterval: CustomStringConvertible {
+    public var start: JulianDay
+    public var end: JulianDay
+    
+    public var duration: Day { Day(end.value - start.value) }
+    
+    public init(start: JulianDay, end: JulianDay) {
+        precondition(start <= end)
+        self.start = start
+        self.end = end
+    }
+    
+    public init(start: JulianDay, duration: Day) {
+        precondition(duration >= 0)
+        self.start = start
+        self.end = start + duration.inJulianDays
+    }
+    
+    public var description: String {
+        String(format: "JD %.2f - %.2f", start.value, end.value)
+    }
+}
