@@ -14,3 +14,10 @@ FOUNDATION_EXPORT double SwiftAAVersionNumber;
 //! Project version string for SwiftAA.
 FOUNDATION_EXPORT const unsigned char SwiftAAVersionString[];
 
+
+/* Swift and C++ inteoperability triggers generation of SwiftAA-Swift.h for Swift code to be used from C++. Even though
+ we don't use Swift from C++, the file is generated. Without the following ObjC forward declarations the compiler
+ throws "Unknown type name UIColor/NSColor/CLLocation" errors in generated SwiftAA-Swift.h */
+@class UIColor;
+@class NSColor;
+@class CLLocation;
