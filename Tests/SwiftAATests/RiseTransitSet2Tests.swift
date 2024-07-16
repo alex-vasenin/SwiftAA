@@ -162,4 +162,57 @@ class RiseTransitSet2Tests: XCTestCase {
         XCTAssert(results.allSatisfy({ $0.isAboveHorizon == false }))
         XCTAssert(results.count == 2)
     }
+    
+    // See http://aa.usno.navy.mil/cgi-bin/aa_rstablew.pl?ID=AA&year=2017&task=4&place=&lon_sign=1&lon_deg=2&lon_min=21&lat_sign=1&lat_deg=48&lat_min=52&tz=0&tz_sign=-1
+    // for a reference table for the 2017 year
+    func testValidTwilightNorthernHemisphereWestLongitudeAgainstUSNOReference() {
+        let paris = GeographicCoordinates(positivelyWestwardLongitude: Degree(.minus, 2, 21, 0.0),
+                                          latitude: Degree(.plus, 48, 52, 0.0))
+        
+        let jan1 = JulianDayInterval(start: JulianDay(year: 2017, month: 1, day: 1), duration: 1)
+        let eventsJan1 = RiseTransitSet2.eventsForSun(dateInterval: jan1, observerLocation: paris)
+        AssertEqual(eventsJan1.twilights.first(where: { $0.kind == .astronomicalDawn })!.time,
+                    JulianDay(year: 2017, month: 1, day: 1, hour: 5, minute: 48), accuracy: accuracy)
+        AssertEqual(eventsJan1.twilights.first(where: { $0.kind == .astronomicalDusk })!.time,
+                    JulianDay(year: 2017, month: 1, day: 1, hour: 18, minute: 00), accuracy: accuracy)
+        
+        let mar1 = JulianDayInterval(start: JulianDay(year: 2017, month: 3, day: 1), duration: 1)
+        let eventsMar1 = RiseTransitSet2.eventsForSun(dateInterval: mar1, observerLocation: paris)
+        AssertEqual(eventsMar1.twilights.first(where: { $0.kind == .astronomicalDawn })!.time,
+                    JulianDay(year: 2017, month: 3, day: 1, hour: 4, minute: 48), accuracy: accuracy)
+        AssertEqual(eventsMar1.twilights.first(where: { $0.kind == .astronomicalDusk })!.time,
+                    JulianDay(year: 2017, month: 3, day: 1, hour: 19, minute: 19), accuracy: accuracy)
+        
+        let jun1 = JulianDayInterval(start: JulianDay(year: 2017, month: 6, day: 1), duration: 1)
+        let eventsJun1 = RiseTransitSet2.eventsForSun(dateInterval: jun1, observerLocation: paris)
+        AssertEqual(eventsJun1.twilights.first(where: { $0.kind == .astronomicalDawn })!.time,
+                    JulianDay(year: 2017, month: 6, day: 1, hour: 0, minute: 44), accuracy: accuracy)
+        AssertEqual(eventsJun1.twilights.first(where: { $0.kind == .astronomicalDusk })!.time,
+                    JulianDay(year: 2017, month: 6, day: 1, hour: 22, minute: 56), accuracy: accuracy)
+        
+        let sep1 = JulianDayInterval(start: JulianDay(year: 2017, month: 9, day: 1), duration: 1)
+        let eventsSep1 = RiseTransitSet2.eventsForSun(dateInterval: sep1, observerLocation: paris)
+        AssertEqual(eventsSep1.twilights.first(where: { $0.kind == .astronomicalDawn })!.time,
+                    JulianDay(year: 2017, month: 9, day: 1, hour: 3, minute: 11), accuracy: accuracy)
+        AssertEqual(eventsSep1.twilights.first(where: { $0.kind == .astronomicalDusk })!.time,
+                    JulianDay(year: 2017, month: 9, day: 1, hour: 20, minute: 28), accuracy: accuracy)
+    }
+    
+    func testValidTwilightNorthernHemisphereAboveArticCircle() {
+        let north = GeographicCoordinates(positivelyWestwardLongitude: Degree(.minus, 2, 21, 0.0),
+                                          latitude: Degree(75.0))
+        
+        let winter = JulianDayInterval(start: JulianDay(year: 2017, month: 1, day: 30), duration: 1)
+        let (winterEvents, _) = RiseTransitSet2.eventsForSun(dateInterval: winter, observerLocation: north)
+        XCTAssert(winterEvents.filter { $0.kind.isRiseOrSet } .count == 0)
+        XCTAssert(winterEvents.filter { $0.kind.isTransit } .count == 2)
+        XCTAssert(winterEvents.filter { $0.kind.isTransit } .allSatisfy { $0.isAboveHorizon == false })
+        
+        // There is a bug in AA+ which make this test fail if we specify hour == 0 (notified the author)
+        let summer = JulianDayInterval(start: JulianDay(year: 2017, month: 7, day: 30, hour: 1), duration: 1)
+        let (summerEvents, _) = RiseTransitSet2.eventsForSun(dateInterval: summer, observerLocation: north)
+        XCTAssert(summerEvents.filter { $0.kind.isRiseOrSet } .count == 0)
+        XCTAssert(summerEvents.filter { $0.kind.isTransit } .count == 2)
+        XCTAssert(summerEvents.filter { $0.kind.isTransit } .allSatisfy { $0.isAboveHorizon == true } )
+    }
 }
