@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "AABridge"
-  s.version      = "3.0.0"
+  s.version      = "3.1.0"
   s.summary      = "AABridge is a C bridge to AA+. It is the base upon which SwiftAA is crafted."
 
   s.homepage     = "https://www.onekiloparsec.dev/SwiftAA"
