@@ -86,7 +86,7 @@
 		50CEF4152A1BF28100367373 /* AAGlobe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CEF31B2A1BF27E00367373 /* AAGlobe.cpp */; };
 		50CEF4162A1BF28100367373 /* AAPhysicalMars.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CEF31C2A1BF27E00367373 /* AAPhysicalMars.cpp */; };
 		50CEF4172A1BF28100367373 /* AAVSOP87C_SAT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CEF31D2A1BF27E00367373 /* AAVSOP87C_SAT.cpp */; };
-		50CEF4182A1BF28100367373 /* AARiseTransitSet2.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CEF31E2A1BF27E00367373 /* AARiseTransitSet2.h */; };
+		50CEF4182A1BF28100367373 /* AARiseTransitSet2.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CEF31E2A1BF27E00367373 /* AARiseTransitSet2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		50CEF4192A1BF28100367373 /* AAMoonNodes2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CEF31F2A1BF27F00367373 /* AAMoonNodes2.cpp */; };
 		50CEF41A2A1BF28100367373 /* AAVSOP87D_EAR.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CEF3202A1BF27F00367373 /* AAVSOP87D_EAR.h */; };
 		50CEF41B2A1BF28100367373 /* AAVSOP87_VEN.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50CEF3212A1BF27F00367373 /* AAVSOP87_VEN.cpp */; };

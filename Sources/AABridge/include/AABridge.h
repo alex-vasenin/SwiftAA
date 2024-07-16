@@ -68,3 +68,5 @@
 #import "KPCAASun.h"
 #import "KPCAAUranus.h"
 #import "KPCAAVenus.h"
+
+#import "AARiseTransitSet2.h"
