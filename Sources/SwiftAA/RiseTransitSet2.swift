@@ -17,7 +17,7 @@ public struct RiseTransitSet2 {
                                        observerLocation: GeographicCoordinates,
                                        apparentRiseSetAltitude: Degree = defaultRiseSetAltitude,
                                        highPrecision: Bool = false) -> [Event] {
-        let result = CAARiseTransitSet2.Calculate(dateInterval.start.value,
+        let events = CAARiseTransitSet2.Calculate(dateInterval.start.value,
                                                   dateInterval.end.value,
                                                   planet.rawValue,
                                                   observerLocation.longitude.value,
@@ -25,15 +25,17 @@ public struct RiseTransitSet2 {
                                                   apparentRiseSetAltitude.value,
                                                   iterationStep.value,
                                                   highPrecision)
-        return result.map { Event(rawValue: $0) }
+        return events.compactMap { Event(rawValue: $0) }
     }
+    
+    public typealias SunEvents = (events: [Event], twilights: [Twilight])
     
     public static func eventsForSun(dateInterval: JulianDayInterval,
                                     iterationStep: Day = defaultIterationStep,
                                     observerLocation: GeographicCoordinates,
                                     apparentRiseSetAltitude: Degree = defaultSunRiseSetAltitude,
-                                    highPrecision: Bool = false) -> [Event] {
-        let result = CAARiseTransitSet2.Calculate(dateInterval.start.value,
+                                    highPrecision: Bool = false) -> SunEvents {
+        let events = CAARiseTransitSet2.Calculate(dateInterval.start.value,
                                                   dateInterval.end.value,
                                                   .SUN,
                                                   observerLocation.longitude.value,
@@ -41,22 +43,24 @@ public struct RiseTransitSet2 {
                                                   apparentRiseSetAltitude.value,
                                                   iterationStep.value,
                                                   highPrecision)
-        return result.map { Event(rawValue: $0) }
+        let riseSetsTransits = events.compactMap { Event(rawValue: $0) }
+        let twilights = events.compactMap { Twilight(rawValue: $0) }
+        return (riseSetsTransits, twilights)
     }
     
     public static func eventsForMoon(dateInterval: JulianDayInterval,
                                      iterationStep: Day = defaultIterationStep,
                                      observerLocation: GeographicCoordinates,
                                      refractionAtHorizon: Degree = defaultRiseSetAltitude,
-                                     algorithm: MoonAlgorithm = .MeeusTruncated) -> [Event] {
-        let result = CAARiseTransitSet2.CalculateMoon(dateInterval.start.value,
+                                     algorithm: MoonAlgorithm = .meeusTruncated) -> [Event] {
+        let events = CAARiseTransitSet2.CalculateMoon(dateInterval.start.value,
                                                       dateInterval.end.value,
                                                       observerLocation.longitude.value,
                                                       observerLocation.latitude.value,
                                                       refractionAtHorizon.value,
                                                       iterationStep.value,
-                                                      algorithm)
-        return result.map { Event(rawValue: $0) }
+                                                      algorithm.rawValue)
+        return events.compactMap { Event(rawValue: $0) }
     }
     
     public static func eventsForStationaryObject(at objectCoordinates: EquatorialCoordinates,
@@ -64,7 +68,7 @@ public struct RiseTransitSet2 {
                                                  iterationStep: Day = defaultIterationStep,
                                                  observerLocation: GeographicCoordinates,
                                                  apparentRiseSetAltitude: Degree = defaultRiseSetAltitude) -> [Event] {
-        let result = CAARiseTransitSet2.CalculateStationary(dateInterval.start.value,
+        let events = CAARiseTransitSet2.CalculateStationary(dateInterval.start.value,
                                                             dateInterval.end.value,
                                                             objectCoordinates.alpha.value,
                                                             objectCoordinates.delta.value,
@@ -72,12 +76,12 @@ public struct RiseTransitSet2 {
                                                             observerLocation.latitude.value,
                                                             apparentRiseSetAltitude.value,
                                                             iterationStep.value)
-        return result.map { Event(rawValue: $0) }
+        return events.compactMap { Event(rawValue: $0) }
     }
     
-    /// Geometric altitude of the center of the body at the time of apparent rising or setting, see p.102 of AA.
+    /// Geometric altitude of a small body at the time of apparent rising or setting, see p.102 of AA.
     public static let defaultRiseSetAltitude = ArcMinute(-34).inDegrees
-    /// Geometric altitude of the center of the body at the time of apparent rising or setting, see p.102 of AA.
+    /// Geometric altitude of the center of the Sun at the time of apparent rising or setting, see p.102 of AA.
     public static let defaultSunRiseSetAltitude = ArcMinute(-50).inDegrees
     /// Approximately 0.007 days (AA+ default)
     public static let defaultIterationStep = Minute(10).inDays
@@ -107,17 +111,25 @@ extension RiseTransitSet2 {
         }
     }
     
-    public typealias EventType = CAARiseTransitSetDetails2.`Type`
-    public typealias Object = CAARiseTransitSet2.Object
-    public typealias MoonAlgorithm = CAARiseTransitSet2.MoonAlgorithm
+    public enum MoonAlgorithm {
+        case meeusTruncated
+        case elp2000
+        
+        var rawValue: CAARiseTransitSet2.MoonAlgorithm {
+            switch self {
+            case .meeusTruncated: return .MeeusTruncated
+            case .elp2000: return .ELP2000
+            }
+        }
+    }
     
     typealias RawDetails = CAARiseTransitSetDetails2
     
     public struct Event {
         /// The type of the event which has occurred
-        public var type: EventType
+        public var kind: Kind
         /// When the event occurred in TT
-        public var julianDay: JulianDay
+        public var time: JulianDay
         /// Applicable for rise or sets only, this will be the bearing (degrees west of south) of the event
         public var bearing: Degree?
         /// For transits only, this will contain the geometric altitude in degrees of the center of the object not including correction for refraction
@@ -125,14 +137,67 @@ extension RiseTransitSet2 {
         /// For transits only, this will be true if the transit is visible
         public var isAboveHorizon: Bool?
         
-        init(rawValue: RawDetails) {
-            self.type = rawValue.type
-            self.julianDay = JulianDay(rawValue.JD)
-            let isRiseOrSet = type == .Rise || type == .Set
-            self.bearing = isRiseOrSet ? Degree(rawValue.Bearing) : nil
-            let isTransit = type == .NorthernTransit || type == .SouthernTransit
-            self.geometricAltitude = isTransit ? Degree(rawValue.GeometricAltitude) : nil
-            self.isAboveHorizon = isTransit ? rawValue.bAboveHorizon : nil
+        init?(rawValue: RawDetails) {
+            guard let kind = Kind(rawValue: rawValue.type) else { return nil }
+            self.kind = kind
+            self.time = JulianDay(rawValue.JD)
+            self.bearing = kind.isRiseOrSet ? Degree(rawValue.Bearing) : nil
+            self.geometricAltitude = kind.isTransit ? Degree(rawValue.GeometricAltitude) : nil
+            self.isAboveHorizon = kind.isTransit ? rawValue.bAboveHorizon : nil
+        }
+        
+        public enum Kind: Equatable {
+            case rise
+            case set
+            case southernTransit
+            case northernTransit
+            
+            public var isTransit: Bool { self == .southernTransit || self == .northernTransit }
+            public var isRiseOrSet: Bool { self == .rise || self == .set }
+            
+            init?(rawValue: RawDetails.`Type`) {
+                switch rawValue {
+                case .Rise: self = .rise
+                case .Set: self = .set
+                case .SouthernTransit: self = .southernTransit
+                case .NorthernTransit: self = .northernTransit
+                default: return nil
+                }
+            }
+        }
+    }
+    
+    public struct Twilight: Equatable {
+        /// The type of the twilight which has occurred
+        public var kind: Kind
+        /// When the event occurred in TT
+        public var time: JulianDay
+        
+        init?(rawValue: RawDetails) {
+            guard let kind = Kind(rawValue: rawValue.type) else { return nil }
+            self.kind = kind
+            self.time = JulianDay(rawValue.JD)
+        }
+        
+        public enum Kind: Equatable {
+            case civilDusk
+            case nauticalDusk
+            case astronomicalDusk
+            case astronomicalDawn
+            case nauticalDawn
+            case civilDawn
+            
+            init?(rawValue: RawDetails.`Type`) {
+                switch rawValue {
+                case .CivilDusk: self = .civilDusk
+                case .NauticalDusk: self = .nauticalDusk
+                case .AstronomicalDusk: self = .astronomicalDusk
+                case .AstronomicalDawn: self = .astronomicalDawn
+                case .NauticalDawn: self = .nauticalDawn
+                case .CivilDawn: self = .civilDawn
+                default: return nil
+                }
+            }
         }
     }
 }

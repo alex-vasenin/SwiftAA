@@ -18,100 +18,100 @@ class RiseTransitSet2Tests: XCTestCase {
         let dateInterval = JulianDayInterval(start: JulianDay(year: 1988, month: 3, day: 20), duration: 1)
         let events = RiseTransitSet2.eventsForPlanet(.venus, dateInterval: dateInterval, observerLocation: boston)
         
-        let rises = events.filter { $0.type == .Rise }
+        let rises = events.filter { $0.kind == .rise }
         XCTAssert(rises.count == 1)
         let expectedRise = JulianDay(year: 1988, month: 03, day: 20, hour: 12, minute: 25)
-        AssertEqual(rises.first!.julianDay, expectedRise, accuracy: accuracy)
+        AssertEqual(rises.first!.time, expectedRise, accuracy: accuracy)
         
-        let transits = events.filter { $0.type == .SouthernTransit }
+        let transits = events.filter { $0.kind == .southernTransit }
         XCTAssert(transits.count == 1)
         let expectedTransit = JulianDay(year: 1988, month: 03, day: 20, hour: 19, minute: 41)
-        AssertEqual(transits.first!.julianDay, expectedTransit, accuracy: accuracy)
+        AssertEqual(transits.first!.time, expectedTransit, accuracy: accuracy)
         
-        let sets = events.filter { $0.type == .Set }
+        let sets = events.filter { $0.kind == .set }
         XCTAssert(sets.count == 1)
         let expectedSet = JulianDay(year: 1988, month: 03, day: 20, hour: 2, minute: 55)
-        AssertEqual(sets.first!.julianDay, expectedSet, accuracy: accuracy)
+        AssertEqual(sets.first!.time, expectedSet, accuracy: accuracy)
     }
     
     func testVenusAtBoston2017() { // See http://aa.usno.navy.mil/data/docs/mrst.php
         let dateInterval = JulianDayInterval(start: JulianDay(year: 2017, month: 3, day: 20), duration: 1)
         let events = RiseTransitSet2.eventsForPlanet(.venus, dateInterval: dateInterval, observerLocation: boston)
         
-        let rises = events.filter { $0.type == .Rise }
+        let rises = events.filter { $0.kind == .rise }
         XCTAssert(rises.count == 1)
         let expectedRise = JulianDay(year: 2017, month: 03, day: 20, hour: 10, minute: 24)
-        AssertEqual(rises.first!.julianDay, expectedRise, accuracy: accuracy)
+        AssertEqual(rises.first!.time, expectedRise, accuracy: accuracy)
         
-        let transits = events.filter { $0.type == .SouthernTransit }
+        let transits = events.filter { $0.kind == .southernTransit }
         XCTAssert(transits.count == 1)
         let expectedTransit = JulianDay(year: 2017, month: 03, day: 20, hour: 17, minute: 06)
-        AssertEqual(transits.first!.julianDay, expectedTransit, accuracy: accuracy)
+        AssertEqual(transits.first!.time, expectedTransit, accuracy: accuracy)
         
-        let sets = events.filter { $0.type == .Set }
+        let sets = events.filter { $0.kind == .set }
         XCTAssert(sets.count == 1)
         let expectedSet = JulianDay(year: 2017, month: 03, day: 20, hour: 23, minute: 48)
-        AssertEqual(sets.first!.julianDay, expectedSet, accuracy: accuracy)
+        AssertEqual(sets.first!.time, expectedSet, accuracy: accuracy)
     }
     
     func testVenusAtMoscow2016() { // Data from SkySafari
         let dateInterval = JulianDayInterval(start: JulianDay(year: 2016, month: 12, day: 27), duration: 1)
         let events = RiseTransitSet2.eventsForPlanet(.venus, dateInterval: dateInterval, observerLocation: moscow)
         
-        let rises = events.filter { $0.type == .Rise }
+        let rises = events.filter { $0.kind == .rise }
         XCTAssert(rises.count == 1)
         let expectedRise = JulianDay(year: 2016, month: 12, day: 27, hour: 8, minute: 18, second: 13)
-        AssertEqual(rises.first!.julianDay, expectedRise, accuracy: accuracy)
+        AssertEqual(rises.first!.time, expectedRise, accuracy: accuracy)
         
-        let transits = events.filter { $0.type == .SouthernTransit }
+        let transits = events.filter { $0.kind == .southernTransit }
         XCTAssert(transits.count == 1)
         let expectedTransit = JulianDay(year: 2016, month: 12, day: 27, hour: 12, minute: 45, second: 0)
-        AssertEqual(transits.first!.julianDay, expectedTransit, accuracy: accuracy)
+        AssertEqual(transits.first!.time, expectedTransit, accuracy: accuracy)
         
-        let sets = events.filter { $0.type == .Set }
+        let sets = events.filter { $0.kind == .set }
         XCTAssert(sets.count == 1)
         let expectedSet = JulianDay(year: 2016, month: 12, day: 27, hour: 17, minute: 12, second: 50)
-        AssertEqual(sets.first!.julianDay, expectedSet, accuracy: accuracy)
+        AssertEqual(sets.first!.time, expectedSet, accuracy: accuracy)
     }
     
     func testSunAtMoscow2016() { // Data from SkySafari
         let dateInterval = JulianDayInterval(start: JulianDay(year: 2016, month: 12, day: 27), duration: 1)
-        let events = RiseTransitSet2.eventsForSun(dateInterval: dateInterval, observerLocation: moscow)
+        let result = RiseTransitSet2.eventsForSun(dateInterval: dateInterval, observerLocation: moscow)
         
-        let rises = events.filter { $0.type == .Rise }
+        let rises = result.events.filter { $0.kind == .rise }
         XCTAssert(rises.count == 1)
         let expectedRise = JulianDay(year: 2016, month: 12, day: 27, hour: 5, minute: 58, second: 24)
-        AssertEqual(rises.first!.julianDay, expectedRise, accuracy: accuracy)
+        AssertEqual(rises.first!.time, expectedRise, accuracy: accuracy)
         
-        let transits = events.filter { $0.type == .SouthernTransit }
+        let transits = result.events.filter { $0.kind == .southernTransit }
         XCTAssert(transits.count == 1)
         let expectedTransit = JulianDay(year: 2016, month: 12, day: 27, hour: 9, minute: 29, second: 41)
-        AssertEqual(transits.first!.julianDay, expectedTransit, accuracy: accuracy)
+        AssertEqual(transits.first!.time, expectedTransit, accuracy: accuracy)
         
-        let sets = events.filter { $0.type == .Set }
+        let sets = result.events.filter { $0.kind == .set }
         XCTAssert(sets.count == 1)
         let expectedSet = JulianDay(year: 2016, month: 12, day: 27, hour: 13, minute: 1, second: 6)
-        AssertEqual(sets.first!.julianDay, expectedSet, accuracy: accuracy)
+        AssertEqual(sets.first!.time, expectedSet, accuracy: accuracy)
     }
     
     func testMoonAtMoscow2016() { // Data from SkySafari
         let dateInterval = JulianDayInterval(start: JulianDay(year: 2016, month: 12, day: 27), duration: 1)
         let events = RiseTransitSet2.eventsForMoon(dateInterval: dateInterval, observerLocation: moscow)
         
-        let rises = events.filter { $0.type == .Rise }
+        let rises = events.filter { $0.kind == .rise }
         XCTAssert(rises.count == 1)
         let expectedRise = JulianDay(year: 2016, month: 12, day: 27, hour: 3, minute: 38, second: 32)
-        AssertEqual(rises.first!.julianDay, expectedRise, accuracy: accuracy)
+        AssertEqual(rises.first!.time, expectedRise, accuracy: accuracy)
         
-        let transits = events.filter { $0.type == .SouthernTransit }
+        let transits = events.filter { $0.kind == .southernTransit }
         XCTAssert(transits.count == 1)
         let expectedTransit = JulianDay(year: 2016, month: 12, day: 27, hour: 7, minute: 57, second: 43)
-        AssertEqual(transits.first!.julianDay, expectedTransit, accuracy: accuracy)
+        AssertEqual(transits.first!.time, expectedTransit, accuracy: accuracy)
         
-        let sets = events.filter { $0.type == .Set }
+        let sets = events.filter { $0.kind == .set }
         XCTAssert(sets.count == 1)
         let expectedSet = JulianDay(year: 2016, month: 12, day: 27, hour: 12, minute: 12, second: 46)
-        AssertEqual(sets.first!.julianDay, expectedSet, accuracy: accuracy)
+        AssertEqual(sets.first!.time, expectedSet, accuracy: accuracy)
 
     }
     
@@ -124,17 +124,17 @@ class RiseTransitSet2Tests: XCTestCase {
         let dateInterval1 = JulianDayInterval(start: JulianDay(year: 2018, month: 1, day: 1, hour: 12), duration: 1)
         let results1 = RiseTransitSet2.eventsForStationaryObject(at: coords, dateInterval: dateInterval1,
                                                                  observerLocation: paranal)
-        XCTAssert(results1.filter { $0.type == .SouthernTransit } .count == 1)
-        XCTAssert(results1.filter { $0.type == .Rise } .count == 1)
-        XCTAssert(results1.filter { $0.type == .Set } .count == 1)
+        XCTAssert(results1.filter { $0.kind == .southernTransit } .count == 1)
+        XCTAssert(results1.filter { $0.kind == .rise } .count == 1)
+        XCTAssert(results1.filter { $0.kind == .set } .count == 1)
         
         let dateInterval2 = JulianDayInterval(start: JulianDay(year: 2018, month: 6, day: 1, hour: 12), duration: 1)
         let results2 = RiseTransitSet2.eventsForStationaryObject(at: coords, dateInterval: dateInterval2,
                                                                  observerLocation: paranal)
         
-        XCTAssert(results2.filter { $0.type == .SouthernTransit } .count == 1)
-        XCTAssert(results2.filter { $0.type == .Rise } .count == 1)
-        XCTAssert(results2.filter { $0.type == .Set } .count == 1)
+        XCTAssert(results2.filter { $0.kind == .southernTransit } .count == 1)
+        XCTAssert(results2.filter { $0.kind == .rise } .count == 1)
+        XCTAssert(results2.filter { $0.kind == .set } .count == 1)
     }
     
     func testPolarisTtransitErrorAlwaysAbove() {
@@ -145,7 +145,7 @@ class RiseTransitSet2Tests: XCTestCase {
                                                latitude: Degree(.plus, 49, 9, 3), altitude: 210)
         let results = RiseTransitSet2.eventsForStationaryObject(at: polaris, dateInterval: dateInterval,
                                                                 observerLocation: usLocation)
-        XCTAssert(results.allSatisfy({ $0.type == .NorthernTransit }))
+        XCTAssert(results.allSatisfy({ $0.kind == .northernTransit }))
         XCTAssert(results.allSatisfy({ $0.isAboveHorizon == true }))
         XCTAssert(results.count == 2)
     }
@@ -158,7 +158,7 @@ class RiseTransitSet2Tests: XCTestCase {
                                             latitude: Degree(-70.404167), altitude: 2400)
         let results = RiseTransitSet2.eventsForStationaryObject(at: polaris, dateInterval: dateInterval,
                                                                 observerLocation: paranal)
-        XCTAssert(results.allSatisfy({ $0.type == .NorthernTransit }))
+        XCTAssert(results.allSatisfy({ $0.kind == .northernTransit }))
         XCTAssert(results.allSatisfy({ $0.isAboveHorizon == false }))
         XCTAssert(results.count == 2)
     }
