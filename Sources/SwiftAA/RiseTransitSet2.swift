@@ -149,7 +149,9 @@ extension RiseTransitSet2 {
         public enum Kind: Equatable {
             case rise
             case set
+            /// Southern means that bearing is 180° (see CAARiseTransitSet2::AddEvents implementation)
             case southernTransit
+            /// Northern means that bearing is 0° (see CAARiseTransitSet2::AddEvents implementation)
             case northernTransit
             
             public var isTransit: Bool { self == .southernTransit || self == .northernTransit }
