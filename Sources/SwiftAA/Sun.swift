@@ -154,5 +154,9 @@ public class Sun: Object, CelestialBody {
         [unowned self] in
         return KPCAAElliptical_CalculatePlanetaryDetails(self.julianDay.value, .SUN_elliptical, self.highPrecision)
         }()
+	
+	public class func eclipticLongitude(at date: JulianDay, highPrecision: Bool = false) -> Degree {
+		return Degree(KPCAASun_GeometricEclipticLongitudeJ2000(date.value, highPrecision))
+	}
 }
 
